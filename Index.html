@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pratica em Formulários</title>
+        <meta charset="uft-8">
+        <link href="css/estilo.css" rel="stylesheet" media="screen">
+        
+        <script type="text/javascript">
+            
+            /* tentei criar uma função baseando na do CPF, mas não está funcionando.
+            
+            function mascaraTEL(n){
+                var tel = n.value;
+
+                if(isNaN(tel[tel.length-1])){
+                    n.value = tel.substring(0, tel.length-1);
+                    return;
+                }
+                n.setAttribute("maxlegenth", "14");
+                if(tel.length==1) n.value += "(";
+                if(tel.length==3) n.value += ")";
+                if(tel.length==8) n.value += "-";
+            }
+            Obs.:Anteriormente estava com outra função que acessava um link externo para o scpript
+            que eram os seguintes dados:
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js">
+
+            $("#telefone, #celular").mask("(00) 0000-0000");
+            esse metodo funcionou, mas não tinha nada que eu pudesse de ver da programação.
+
+            */
+            /* peguei essas duas funções mask e mtel na internet e adaptei ao formulario. 
+            No entando estou com dificuldade para entender algumas informações.
+            */
+            function mask(o, f) {
+                setTimeout(function() {
+                var v = mtel(o.value);
+                if (v != o.value) {
+                o.value = v;
+                }
+            }, 1);
+            }
+            
+            function mtel(v) {
+                var r = v.replace(/\D/g, ""); //Remove tudo o que não é dígito
+                r = r.replace(/^0/, "");
+                if (r.length > 10) {
+                    r = r.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+                } else if (r.length > 5) {
+                    r = r.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+                } else if (r.length > 2) {
+                    r = r.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+                } else {
+                    r = r.replace(/^(\d*)/, "($1");
+                }
+                return r;
+            }
+            
+            function mascaraCPF(i){
+                 var cpf = i.value;
+
+                if(isNaN(cpf[cpf.length-1])){ //impede entrada de outros carecteres que não sejam números
+                    i.value = cpf.substring(0, cpf.length-1);
+                    return;
+                }
+
+                i.setAttribute("maxlegenth", "14");
+                if (cpf.length==3 || cpf.length==7) i.value += ".";
+                if (cpf.length==11) i.value += "-";
+            }
+            
+        </script>
+    </head>
+    <body>
+        <h2>Teste Para Farmulário</h2>
+        
+        <table>
+            <tr>
+                <td>
+                    <h5>Dados Pessoais</h5>
+                </td>
+            </tr>
+            <tr>
+                <form method="POST" name="formulario" action="escobar.html">
+                    <td>
+                        <label for="nome">Nome:</label>
+                        <input type="text" name="nome" id="nome" size="30" maxlength="40" placeholder="Insira seu nome" autofocus required>
+                    </td>
+            </tr>
+            <tr>
+                    <td>
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" name="telefone" id="telefone" onkeypress="mask(this, mtel)" onblur="mask(this, mtel)" size="10" placeholder="(00) 00000-0000" required>
+                    </td>
+            </tr>
+            <tr>
+                    <td>
+                        <label for="cpf">CPF:</label>
+                        <input type="text" name="cpf" size="10" oninput="mascaraCPF(this)" maxlength="14" placeholder="000.000.000-00" required>    
+                    </td>
+            </tr>
+                    <td>
+                    <input type="submit" name="enviar" id="enviar" value="Enviar">
+                    </td>
+                </form>
+            
+    </table>
+        
+    </body>
+</html>
